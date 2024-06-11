@@ -48,7 +48,7 @@ const page: FC = () => {
                             </button>
                             <div className="mt-1 text-xs text-gray-500">
                                 Don't have an account?{" "}
-                                <span className="font-bold text-rose-800">
+                                <span className="underline-2 font-bold text-rose-800 hover:border-b-rose-600 hover:text-rose-600 hover:underline">
                                     Sign up
                                 </span>
                             </div>
