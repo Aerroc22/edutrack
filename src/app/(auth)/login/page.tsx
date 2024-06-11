@@ -26,11 +26,11 @@ const page: FC = () => {
                         <input
                             type="text"
                             className="mt-1 h-10 min-w-full rounded-lg border-2 border-gray-300 text-xs"
-                            placeholder="youremail@school.edu"
+                            placeholder="Email@email.com"
                         />
                         <label
                             htmlFor="password"
-                            className="mt-2 block text-xs font-medium leading-6 text-gray-900"
+                            className="mt-4 block text-xs font-medium leading-6 text-gray-900"
                         >
                             Password
                         </label>
@@ -39,12 +39,20 @@ const page: FC = () => {
                             className="mt-1 h-10 w-full rounded-lg border-2 border-gray-300 text-xs"
                             placeholder="Password"
                         />
-                        <button
-                            type="submit"
-                            className="mt-5 flex h-11 w-full items-center justify-center rounded-md bg-rose-900 text-xs font-semibold text-gray-50 transition hover:bg-rose-800"
-                        >
-                            Sign in
-                        </button>
+                        <div>
+                            <button
+                                type="submit"
+                                className="mt-6 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-xs font-semibold text-gray-50 transition hover:bg-rose-700"
+                            >
+                                Sign in
+                            </button>
+                            <div className="mt-1 text-xs text-gray-500">
+                                Don't have an account?{" "}
+                                <span className="font-bold text-rose-800">
+                                    Sign up
+                                </span>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
