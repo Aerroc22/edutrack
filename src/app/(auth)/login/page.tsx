@@ -1,6 +1,6 @@
 "use client"
 import Logo from "@/components/ui/Logo"
-import { loginValidator } from "@/lib/validators/auth"
+import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
 import { ZodError } from "zod"
 
@@ -15,31 +15,9 @@ interface Error {
 const page: FC = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [errors, setErrors] = useState<Error>({})
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        setErrors({})
-
-        try {
-            const parsedLogin = loginValidator({ email, password })
-        } catch (error) {
-            if (error instanceof ZodError) {
-                error.errors.forEach((err) => {
-                    if (err.path[0] === "email") {
-                        setErrors({ ...errors, emailErr: err.message })
-                    }
-                    if (err.path[0] === "password") {
-                        setErrors({ ...errors, passwordErr: err.message })
-                    }
-                })
-            } else {
-                setErrors({
-                    ...errors,
-                    unknownErr: "Unknown error has occured",
-                })
-            }
-        }
     }
 
     return (
@@ -71,9 +49,6 @@ const page: FC = () => {
                                 setEmail(e.target.value)
                             }}
                         />
-                        <div className="text-xs text-rose-800">
-                            {errors?.emailErr}
-                        </div>
                         <label
                             htmlFor="password"
                             className="mt-4 block text-xs font-medium leading-6 text-gray-900"
@@ -86,9 +61,6 @@ const page: FC = () => {
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <div className="text-xs text-rose-800">
-                            {errors?.passwordErr || errors?.unknownErr}
-                        </div>
                         <div>
                             <button
                                 type="submit"
@@ -98,9 +70,11 @@ const page: FC = () => {
                             </button>
                             <div className="mt-1 text-xs text-gray-500">
                                 Don't have an account?{" "}
-                                <span className="underline-2 font-bold text-rose-800 hover:border-b-rose-600 hover:text-rose-600 hover:underline">
-                                    Sign up
-                                </span>
+                                <Link href={"/register"}>
+                                    <span className="underline-2 font-bold text-rose-800 hover:border-b-rose-600 hover:text-rose-600 hover:underline">
+                                        Sign up
+                                    </span>{" "}
+                                </Link>
                             </div>
                         </div>
                     </form>
