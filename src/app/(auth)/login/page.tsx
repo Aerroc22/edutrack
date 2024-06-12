@@ -37,7 +37,7 @@ const page: FC = () => {
                     <form onSubmit={handleSubmit} className="w-full">
                         <label
                             htmlFor="email"
-                            className="block text-xs font-medium leading-6 text-gray-900"
+                            className="block text-xs font-bold text-gray-900"
                         >
                             Email
                         </label>
@@ -51,7 +51,7 @@ const page: FC = () => {
                         />
                         <label
                             htmlFor="password"
-                            className="mt-4 block text-xs font-medium leading-6 text-gray-900"
+                            className="mt-3 block text-xs font-bold text-gray-900"
                         >
                             Password
                         </label>
@@ -64,7 +64,7 @@ const page: FC = () => {
                         <div>
                             <button
                                 type="submit"
-                                className="mt-6 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-xs font-semibold text-gray-50 transition hover:bg-rose-700"
+                                className="mt-4 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-sm font-semibold text-gray-50 transition hover:bg-rose-700"
                             >
                                 Sign in
                             </button>

@@ -1,5 +1,6 @@
 "use client"
 import Logo from "@/components/ui/Logo"
+import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
 import { ZodError, z } from "zod"
 
@@ -69,7 +70,8 @@ const page: FC = () => {
                     <div className="flex w-full items-center justify-center gap-4 text-xl text-slate-900">
                         <Logo className="h-16 w-16" />
                         <div className="block text-center">
-                            Welcome to <br></br>
+                            Register an account <br />
+                            at{" "}
                             <span className="font-bold text-rose-800">
                                 Edutrack!
                             </span>
@@ -79,7 +81,7 @@ const page: FC = () => {
                     <form onSubmit={handleSubmit} className="w-full">
                         <label
                             htmlFor="email"
-                            className="block text-xs font-medium text-gray-900"
+                            className="block text-xs font-bold text-gray-900"
                         >
                             Name
                         </label>
@@ -96,7 +98,7 @@ const page: FC = () => {
                         </div>
                         <label
                             htmlFor="email"
-                            className="mt-3 block text-xs font-medium text-gray-900"
+                            className="mt-3 block text-xs font-bold text-gray-900"
                         >
                             Email
                         </label>
@@ -113,7 +115,7 @@ const page: FC = () => {
                         </div>
                         <label
                             htmlFor="password"
-                            className="mt-3 block text-xs font-medium text-gray-900"
+                            className="mt-3 block text-xs font-bold text-gray-900"
                         >
                             Password
                         </label>
@@ -129,15 +131,17 @@ const page: FC = () => {
                         <div>
                             <button
                                 type="submit"
-                                className="mt-4 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-xs font-semibold text-gray-50 transition hover:bg-rose-700"
+                                className="mt-4 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-sm font-bold text-gray-50 transition hover:bg-rose-700"
                             >
-                                Sign in
+                                Sign up
                             </button>
                             <div className="mt-1 text-xs text-gray-500">
-                                Don't have an account?{" "}
-                                <span className="underline-2 font-bold text-rose-800 hover:border-b-rose-600 hover:text-rose-600 hover:underline">
-                                    Sign up
-                                </span>
+                                Have an account?{" "}
+                                <Link href="/login">
+                                    <span className="underline-2 font-bold text-rose-800 hover:border-b-rose-600 hover:text-rose-600 hover:underline">
+                                        Sign in
+                                    </span>
+                                </Link>
                             </div>
                         </div>
                     </form>
