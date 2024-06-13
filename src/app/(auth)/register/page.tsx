@@ -1,66 +1,47 @@
 "use client"
 import Logo from "@/components/ui/Logo"
+import { registerSchema } from "@/lib/schemas/authReqSchemas"
 import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
 import { ZodError, z } from "zod"
 
-type typeOfError = "email" | "password" | "other"
+const typeOfError = ["email", "password", "name"]
 
-interface Error {
-    emailErr?: string
-    nameErr?: string
-    passwordErr?: string
-    unknownErr?: string
+type Errors = {
+    form?: z.inferFlattenedErrors<typeof registerSchema>
+    fetch?: string
 }
 
 const page: FC = () => {
     const [name, setName] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
-    const [errors, setErrors] = useState<Error>({})
+    const [errors, setErrors] = useState<Errors>({})
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setErrors({})
 
         try {
-            const validatedInput = {
-                name: z.string().min(1).safeParse(name),
-                email: z.string().email().safeParse(email),
-                password: z.string().min(6).safeParse(password),
-            }
-
-            const success =
-                validatedInput.name.success &&
-                validatedInput.email.success &&
-                validatedInput.password.success
-
-            let newErrors: Error = {}
-
-            if (!success) {
-                if (!validatedInput.name.success) {
-                    newErrors = { nameErr: "Please enter your full name" }
-                }
-                if (!validatedInput.email.success) {
-                    newErrors = { ...newErrors, emailErr: "Invalid email" }
-                }
-                if (!validatedInput.password.success) {
-                    newErrors = {
-                        ...newErrors,
-                        passwordErr:
-                            "Password must be longer than six charachters",
-                    }
-                }
-            } else {
-                // Handle submit
-            }
-
-            setErrors(newErrors)
-        } catch (error) {
-            setErrors({
-                ...errors,
-                unknownErr: "Unknown error has occured",
+            const validatedFields = registerSchema.safeParse({
+                email,
+                password,
+                name,
             })
-        }
+            if (validatedFields.success) {
+                // Handle submit
+                const register = fetch("/api/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    body: JSON.stringify(validatedFields.data),
+                })
+                console.log(register)
+            } else {
+                setErrors({ form: validatedFields.error.flatten() })
+            }
+        } catch (error) {}
     }
 
     return (
@@ -94,7 +75,9 @@ const page: FC = () => {
                             }}
                         />
                         <div className="text-xs text-rose-800">
-                            {errors?.nameErr}
+                            {errors.form?.fieldErrors?.name
+                                ? errors.form?.fieldErrors?.name[0]
+                                : null}
                         </div>
                         <label
                             htmlFor="email"
@@ -111,7 +94,9 @@ const page: FC = () => {
                             }}
                         />
                         <div className="text-xs text-rose-800">
-                            {errors?.emailErr}
+                            {errors?.form?.fieldErrors.email
+                                ? errors?.form?.fieldErrors.email[0]
+                                : null}
                         </div>
                         <label
                             htmlFor="password"
@@ -126,7 +111,11 @@ const page: FC = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <div className="text-xs text-rose-800">
-                            {errors?.passwordErr || errors?.unknownErr}
+                            {(errors?.form?.fieldErrors.password
+                                ? errors?.form?.fieldErrors.password[0]
+                                : null) ||
+                                errors?.form?.formErrors[0] ||
+                                errors.fetch}
                         </div>
                         <div>
                             <button
