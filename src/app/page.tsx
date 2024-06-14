@@ -1,7 +1,11 @@
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Hello World</h1>
-    </main>
-  );
+import { db } from "@/lib/db"
+
+import { FC } from "react"
+
+interface pageProps {}
+
+const page: FC<pageProps> = async ({}) => {
+    return <div>Hello?</div>
 }
+
+export default page
