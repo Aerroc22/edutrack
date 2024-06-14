@@ -10,8 +10,15 @@ export const {
     signOut,
 } = NextAuth({
     callbacks: {
+        async session({ session, token }) {
+            // Passing the updated information from the token to the session
+            if (token.sub && session.user) {
+                session.user.id = token.sub
+            }
+            return session
+        },
         async jwt({ token }) {
-            console.log({ token })
+            // DB requests to update the JWT user token go here
             return token
         },
     },
