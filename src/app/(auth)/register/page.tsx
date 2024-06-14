@@ -1,5 +1,6 @@
 "use client"
 import Logo from "@/components/ui/Logo"
+import { login } from "@/lib/actions/login"
 import { registerSchema } from "@/lib/schemas/authReqSchemas"
 import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
@@ -18,7 +19,7 @@ const page: FC = () => {
     const [password, setPassword] = useState<string>("")
     const [errors, setErrors] = useState<Errors>({})
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setErrors({})
 
@@ -30,14 +31,24 @@ const page: FC = () => {
             })
             if (validatedFields.success) {
                 // Handle submit
-                const register = fetch("/api/auth/register", {
+                const registerResponse = await fetch("/api/auth/register", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json",
                     },
                     body: JSON.stringify(validatedFields.data),
                 })
-                console.log(register)
+
+                if (registerResponse.status === 200) {
+                    const loginErr = await login({ email, password })
+                    if (loginErr?.error) setErrors({ fetch: loginErr.error })
+                } else {
+                    const response = (await registerResponse.json()) as {
+                        message: string
+                    }
+
+                    setErrors({ fetch: response.message })
+                }
             } else {
                 setErrors({ form: validatedFields.error.flatten() })
             }

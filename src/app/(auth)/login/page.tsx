@@ -1,23 +1,28 @@
 "use client"
 import Logo from "@/components/ui/Logo"
+import { login } from "@/lib/actions/login"
+import { AuthError } from "next-auth"
 import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
-import { ZodError } from "zod"
-
-type typeOfError = "email" | "password" | "other"
-
-interface Error {
-    emailErr?: string
-    passwordErr?: string
-    unknownErr?: string
-}
 
 const page: FC = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
+    const [error, setError] = useState<string>("")
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setError("")
+        try {
+            const response = await login({ email, password })
+
+            if (response?.error) {
+                setError(response.error)
+                console.log(error)
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -61,6 +66,7 @@ const page: FC = () => {
                             placeholder="Password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
+                        <div className="mt-1 text-rose-700">{error}</div>
                         <div>
                             <button
                                 type="submit"

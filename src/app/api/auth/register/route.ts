@@ -1,6 +1,6 @@
 import { db } from "@/lib/db"
 import { registerSchema } from "@/lib/schemas/authReqSchemas"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
     const body = await req.json()
