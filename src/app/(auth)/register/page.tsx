@@ -2,6 +2,7 @@
 import Logo from "@/components/ui/Logo"
 import { login } from "@/lib/actions/login"
 import { registerSchema } from "@/lib/schemas/authReqSchemas"
+import { Loader2 } from "lucide-react"
 import Link from "next/link"
 import { FC, FormEvent, useState } from "react"
 import { ZodError, z } from "zod"
@@ -18,10 +19,12 @@ const page: FC = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [errors, setErrors] = useState<Errors>({})
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setErrors({})
+        setIsLoading(true)
 
         try {
             const validatedFields = registerSchema.safeParse({
@@ -52,7 +55,12 @@ const page: FC = () => {
             } else {
                 setErrors({ form: validatedFields.error.flatten() })
             }
-        } catch (error) {}
+        } catch (error) {
+        } finally {
+            await setTimeout(() => {
+                setIsLoading(false)
+            }, 200)
+        }
     }
 
     return (
@@ -131,8 +139,11 @@ const page: FC = () => {
                         <div>
                             <button
                                 type="submit"
-                                className="mt-4 flex h-11 w-full items-center justify-center rounded-md bg-rose-800 text-sm font-bold text-gray-50 transition hover:bg-rose-700"
+                                className="mt-4 flex h-11 w-full items-center justify-center rounded-md bg-rose-700 text-sm font-bold text-gray-50 transition hover:bg-rose-600"
                             >
+                                {isLoading ? (
+                                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                                ) : null}{" "}
                                 Sign up
                             </button>
                             <div className="mt-1 text-xs text-gray-500">
