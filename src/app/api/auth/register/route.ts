@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs"
 
 export async function POST(req: Request) {
     const body = await req.json()
+    console.log(body)
     const { success, data } = registerSchema.safeParse(body)
 
     if (!success)

@@ -15,6 +15,6 @@ export const authRoutes = ["/login", "/register"]
  * Prefix of the auth api
  * @type {string}
  */
-export const apiAuthPrefix = "/api/auth"
+export const apiAuthPrefix = "/api"
 
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard"
