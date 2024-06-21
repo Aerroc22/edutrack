@@ -16,12 +16,31 @@ generator client {
 // Auth.js Prisma MongoDB schema: https://authjs.dev/getting-started/adapters/prisma
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  password      String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  email               String    @unique
+  password            String
+  emailVerified       DateTime?
+  image               String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  teachingClasses     Class[]   @relation("Teacher", fields: [teachingClassIds], references: [id])
+  teachingClassIds    String[]  @db.ObjectId
+  studentClasses      Class[]   @relation("Student", fields: [studnetClassIds], references: [id])
+  studnetClassIds     String[]  @db.ObjectId
+  joinClassRequests   Class[]   @relation("JoinClass", fields: [joinClassRequestIds], references: [id])
+  joinClassRequestIds String[]  @db.ObjectId
+}
+
+model Class {
+  id                     String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  description            String?
+  classInviteCode        String   @unique
+  teachers               User[]   @relation("Teacher", fields: [teacherIds], references: [id])
+  teacherIds             String[] @db.ObjectId
+  students               User[]   @relation("Student", fields: [studentIds], references: [id])
+  studentIds             String[] @db.ObjectId
+  joinClassRequests      User[]   @relation("JoinClass", fields: [usersJoiningRequestIds], references: [id])
+  usersJoiningRequestIds String[] @db.ObjectId
 }
