@@ -26,5 +26,6 @@ export const {
     session: {
         strategy: "jwt",
     },
+    jwt: {},
     ...authConfig,
 })
